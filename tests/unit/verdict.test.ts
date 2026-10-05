@@ -160,6 +160,49 @@ describe('cellVerdict', () => {
     expect(c.notes.join(' ')).toMatch(/CIs separate but/);
   });
 
+  it('NOISE, not REGRESSION: tiny-but-real drop (CIs separate, n=100) with paired |d| < effectSizeThreshold', () => {
+    // Fixture, n = 100 paired examples, repeating blocks of 4 (i % 4):
+    //   baseline  b = [0.90, 0.70, 0.90, 0.70]   mean 0.80, sample sd = sqrt(100 * 0.01 / 99)  = 0.100504
+    //   candidate c = [0.85, 0.85, 0.65, 0.65]   mean 0.75, sample sd = 0.100504 (same shape)
+    //   diff c - b  = [-0.05, +0.15, -0.25, -0.05] per block -> mean(diff) = -0.05
+    //
+    // CI (n >= 30 -> normal, z = 1.96): half-width = 1.96 * 0.100504 / sqrt(100) = 0.019699
+    //   baseline  [0.780301, 0.819699]
+    //   candidate [0.730301, 0.769699]  -> 0.769699 < 0.780301, so the CIs ARE separated.
+    //
+    // Paired effect d_z = mean(diff) / sd(diff):
+    //   deviations from -0.05 per block: [0, +0.2, -0.2, 0] -> SS = 0.08 per block, 25 blocks -> 2.0
+    //   sd(diff) = sqrt(2.0 / 99) = 0.142134
+    //   d_z = -0.05 / 0.142134 = -0.3518  -> |d| < effectSizeThreshold (0.5)
+    //
+    // Sufficient n (100 >= minExamples 5) and separated CIs, so the ONLY thing keeping this out of
+    // REGRESSION is the effect-size gate. Verdict must be NOISE.
+    const n = 100;
+    const b = Array.from({ length: n }, (_, i) => [0.9, 0.7, 0.9, 0.7][i % 4]);
+    const c = Array.from({ length: n }, (_, i) => [0.85, 0.85, 0.65, 0.65][i % 4]);
+
+    const cell = cellVerdict('m1', 'correctness', rows('a', b), rows('b', c), T);
+    expect(T.effectSizeThreshold).toBe(0.5);
+    expect(cell.baseline.n).toBe(n);
+    expect(cell.candidate.n).toBe(n);
+    expect(cell.baseline.ciMethod).toBe('normal');
+    expect(cell.delta).toBeCloseTo(-0.05, 6);
+    expect(cell.ciSeparated).toBe(true);
+    expect(cell.effectMode).toBe('paired');
+    expect(cell.pairedN).toBe(n);
+    expect(cell.effectSize).toBeCloseTo(-0.3518, 3);
+    expect(Math.abs(cell.effectSize)).toBeLessThan(T.effectSizeThreshold);
+    expect(cell.verdict).toBe('NOISE');
+    expect(cell.notes.join(' ')).toMatch(/CIs separate but \|d\|=0\.352 < 0\.5/);
+
+    // Control: same data, threshold below |d| -> REGRESSION. Proves the effect-size gate decides it.
+    const lowBar = cellVerdict('m1', 'correctness', rows('a', b), rows('b', c), {
+      ...T,
+      effectSizeThreshold: 0.3,
+    });
+    expect(lowBar.verdict).toBe('REGRESSION');
+  });
+
   it('CHRONIC_RED: both runs below floor and not changed', () => {
     const red = [0.3, 0.31, 0.29, 0.32, 0.28, 0.3, 0.31, 0.29, 0.3, 0.3];
     const redWiggle = red.map((x, i) => x + (i % 2 === 0 ? 0.005 : -0.005));

@@ -1,7 +1,7 @@
 # EDV — Eval Delta Verdict
 
 Point at an eval suite and two runs; get a verdict — **real regression** vs **noise / chronically red** —
-with confidence intervals, per model, backed by Elasticsearch. Deterministic statistics only; no LLM in the verdict path.
+with confidence intervals, per model, backed by Elasticsearch. Deterministic statistics only; no LLM in the verdict path. An optional, flag-gated judge seam exists (`src/lib/judge.ts`, decision D4) but is OFF by default and never in the verdict path.
 
 Data shape is the kbn-evals `.evaluation-scores*` golden shape. Course project (10xDevs 4.0 10xBuilder).
 
