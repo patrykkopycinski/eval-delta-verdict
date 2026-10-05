@@ -1,12 +1,12 @@
-# Course artifacts (placeholders)
+# Course artifacts (10xDevs 4.0)
 
-Deliverables for the 10xDevs 4.0 10xBuilder certification are submitted on the
-course platform. This directory intentionally contains no PRD or plan text:
-add exports here only when they come from the platform.
+Process artifacts for the course project, kept as first-class repo history rather
+than external notes:
 
-| Artifact | Status | Where |
-|---|---|---|
-| PRD | not stored here | course platform |
-| Implementation plan | not stored here | course platform |
-| Test plan | `tests/` (unit + Playwright) | this repo |
-| CI | `.github/workflows/ci.yml` | this repo |
+- `shape-notes.md` — shaping / decision record: locked decisions D1–D15 (verdict
+  semantics, two-level run/cell model, auth model, scope cuts and rejected
+  options), written 2026-09-22 → 2026-10-02, BEFORE implementation started.
+- `build-spec.md` — the one-page build spec handed to the implementing agent.
+
+Decisions in `shape-notes.md` are the contract the implementation was validated
+against; deviations are treated as bugs.
