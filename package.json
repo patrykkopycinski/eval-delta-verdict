@@ -19,7 +19,8 @@
     "es:logs": "docker compose logs -f elasticsearch",
     "seed": "tsx scripts/seed.ts",
     "ingest": "tsx scripts/ingest.ts",
-    "verdict": "tsx scripts/verdict.ts"
+    "verdict": "tsx scripts/verdict.ts",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@elastic/elasticsearch": "^9.0.0",
@@ -32,10 +33,13 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
     "@playwright/test": "^1.48.0",
     "@types/node": "^22.7.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.27",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",
     "vitest": "^2.1.0"
