@@ -50,7 +50,7 @@ const EXPERIMENTS_MAPPING = {
 
 const ANNOTATIONS_MAPPING = {
   properties: {
-    experiment_name: { type: 'keyword' },
+    experiment_id: { type: 'keyword' },
     baseline_run: { type: 'keyword' },
     candidate_run: { type: 'keyword' },
     verdict: { type: 'keyword' },
