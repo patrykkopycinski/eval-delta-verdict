@@ -13,7 +13,11 @@ npm run es:up                # ES 9 on 127.0.0.1:19200, security off (local only
 npm run seed                 # users, experiments, deterministic runs
 npm run build && npm start   # http://localhost:3000
 ```
-Seeded logins (dev defaults): `patryk` / `patryk-edv-2026` (admin), `demo` / `demo-edv-2026` (viewer).
+Seeded logins (dev defaults, local only): `patryk` / `patryk-edv-2026` (admin), `demo` / `demo-edv-2026` (viewer). Override with `EDV_SEED_ADMIN_PASSWORD` / `EDV_SEED_VIEWER_PASSWORD` and set `SESSION_SECRET` for any non-local deployment.
+
+## Live demo
+
+A seeded instance runs at **https://edv.widzimysie.pl** behind a Cloudflare tunnel. The dev-default logins above do **not** work there — credentials are rotated per deployment; ask the maintainer for a viewer account. Both the app (`127.0.0.1:3000`) and its dedicated Elasticsearch (`127.0.0.1:19200`) bind to loopback only; the tunnel is the sole public entry point.
 
 Load real kbn-evals exports: `npm run ingest -- --index .evaluation-scores-2026.10 < scores.ndjson`
 CLI verdict: `npm run verdict -- agent-builder-core abc-run-02 abc-run-03`
