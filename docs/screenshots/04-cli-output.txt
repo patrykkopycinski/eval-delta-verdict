@@ -1,0 +1,163 @@
+$ npm run verdict -- agent-builder-core abc-run-02 abc-run-03
+
+> eval-delta-verdict@0.1.0 verdict
+> tsx scripts/verdict.ts agent-builder-core abc-run-02 abc-run-03
+
+{
+  "verdict": "REGRESSION",
+  "thresholds": {
+    "effectSizeThreshold": 0.5,
+    "redFloor": 0.5,
+    "minExamples": 5
+  },
+  "models": [
+    {
+      "taskModel": "model-a",
+      "verdict": "NOISE",
+      "cells": [
+        {
+          "taskModel": "model-a",
+          "evaluator": "correctness",
+          "verdict": "NOISE",
+          "baseline": {
+            "n": 20,
+            "mean": 0.814225,
+            "sd": 0.059408,
+            "ciLow": 0.786421,
+            "ciHigh": 0.842029,
+            "ciMethod": "t"
+          },
+          "candidate": {
+            "n": 20,
+            "mean": 0.814618,
+            "sd": 0.060553,
+            "ciLow": 0.786278,
+            "ciHigh": 0.842957,
+            "ciMethod": "t"
+          },
+          "delta": 0.000392,
+          "effectSize": 0.0355,
+          "effectMode": "paired",
+          "pairedN": 20,
+          "ciSeparated": false,
+          "judgeAgreement": {
+            "judges": 2,
+            "baseline": 0.976155,
+            "candidate": 0.984475
+          },
+          "notes": [
+            "low n: Student-t CI (n < 30)"
+          ]
+        },
+        {
+          "taskModel": "model-a",
+          "evaluator": "groundedness",
+          "verdict": "NOISE",
+          "baseline": {
+            "n": 20,
+            "mean": 0.759529,
+            "sd": 0.064933,
+            "ciLow": 0.729139,
+            "ciHigh": 0.789918,
+            "ciMethod": "t"
+          },
+          "candidate": {
+            "n": 20,
+            "mean": 0.758653,
+            "sd": 0.069619,
+            "ciLow": 0.72607,
+            "ciHigh": 0.791235,
+            "ciMethod": "t"
+          },
+          "delta": -0.000876,
+          "effectSize": -0.0603,
+          "effectMode": "paired",
+          "pairedN": 20,
+          "ciSeparated": false,
+          "judgeAgreement": {
+            "judges": 2,
+            "baseline": 0.981648,
+            "candidate": 0.978035
+          },
+          "notes": [
+            "low n: Student-t CI (n < 30)"
+          ]
+        }
+      ]
+    },
+    {
+      "taskModel": "model-b",
+      "verdict": "REGRESSION",
+      "cells": [
+        {
+          "taskModel": "model-b",
+          "evaluator": "correctness",
+          "verdict": "REGRESSION",
+          "baseline": {
+            "n": 20,
+            "mean": 0.826556,
+            "sd": 0.058585,
+            "ciLow": 0.799138,
+            "ciHigh": 0.853975,
+            "ciMethod": "t"
+          },
+          "candidate": {
+            "n": 20,
+            "mean": 0.611101,
+            "sd": 0.065125,
+            "ciLow": 0.580622,
+            "ciHigh": 0.64158,
+            "ciMethod": "t"
+          },
+          "delta": -0.215455,
+          "effectSize": -13.6808,
+          "effectMode": "paired",
+          "pairedN": 20,
+          "ciSeparated": true,
+          "judgeAgreement": {
+            "judges": 2,
+            "baseline": 0.979553,
+            "candidate": 0.980493
+          },
+          "notes": [
+            "low n: Student-t CI (n < 30)"
+          ]
+        },
+        {
+          "taskModel": "model-b",
+          "evaluator": "groundedness",
+          "verdict": "NOISE",
+          "baseline": {
+            "n": 20,
+            "mean": 0.752739,
+            "sd": 0.057563,
+            "ciLow": 0.725799,
+            "ciHigh": 0.779679,
+            "ciMethod": "t"
+          },
+          "candidate": {
+            "n": 20,
+            "mean": 0.759469,
+            "sd": 0.052267,
+            "ciLow": 0.735007,
+            "ciHigh": 0.78393,
+            "ciMethod": "t"
+          },
+          "delta": 0.00673,
+          "effectSize": 0.3823,
+          "effectMode": "paired",
+          "pairedN": 20,
+          "ciSeparated": false,
+          "judgeAgreement": {
+            "judges": 2,
+            "baseline": 0.985693,
+            "candidate": 0.985343
+          },
+          "notes": [
+            "low n: Student-t CI (n < 30)"
+          ]
+        }
+      ]
+    }
+  ]
+}
