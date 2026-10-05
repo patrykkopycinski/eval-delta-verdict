@@ -19,6 +19,8 @@ Seeded logins (dev defaults, local only): `patryk` / `patryk-edv-2026` (admin), 
 
 A seeded instance runs at **https://edv.widzimysie.pl** behind a Cloudflare tunnel. The dev-default logins above do **not** work there — credentials are rotated per deployment; ask the maintainer for a viewer account. Both the app (`127.0.0.1:3000`) and its dedicated Elasticsearch (`127.0.0.1:19200`) bind to loopback only; the tunnel is the sole public entry point.
 
+![Live demo — verdict index at edv.widzimysie.pl (viewer session)](docs/screenshots/live-demo.png)
+
 Load real kbn-evals exports: `npm run ingest -- --index .evaluation-scores-2026.10 < scores.ndjson`
 CLI verdict: `npm run verdict -- agent-builder-core abc-run-02 abc-run-03`
 
