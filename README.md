@@ -36,18 +36,18 @@ flowchart LR
     MW[middleware.ts<br/>session gate]
     AUTH[auth.ts / session.ts<br/>argon2 + HMAC cookie]
     PERM[permissions.ts<br/>admin / viewer]
-    SC[scores.ts<br/>ES&#124;QL reads]
+    SC[scores.ts<br/>ESQL reads]
     VE[lib/verdict<br/>pure TS engine]
   end
   subgraph ES["Elasticsearch 9 (system of record)"]
-    S[(.evaluation-scores*)]
+    S[(.evaluation-scores indices)]
     U[(edv-users)]
     X[(edv-experiments)]
     A[(edv-annotations)]
   end
   UI --> MW --> AUTH --> PERM
   PERM --> SC
-  SC -- "AVG(score) BY run, model, evaluator, judge, example" --> S
+  SC -- "AVG score BY run, model, evaluator, judge, example" --> S
   SC --> VE --> UI
   AUTH --> U
   PERM --> X
@@ -59,15 +59,15 @@ Verdict engine flow (`src/lib/verdict`, deterministic: no I/O, clock, randomness
 
 ```mermaid
 flowchart TD
-  R[ES&#124;QL rows: run x task_model x evaluator x judge x example] --> J[average repetitions within judge]
+  R["ESQL rows: run x task_model x evaluator x judge x example"] --> J[average repetitions within judge]
   J --> E[average judges per example]
-  J --> JA[judge agreement<br/>n/a if single judge]
-  E --> CI[95% CI: Student-t n<30, normal n>=30]
-  E --> D[effect size: paired d_z, unpaired Cohen d fallback]
+  J --> JA["judge agreement<br/>n/a if single judge"]
+  E --> CI["95% CI: Student-t below n=30, normal from n=30"]
+  E --> D["effect size: paired d_z, unpaired Cohen d fallback"]
   CI --> V{verdict}
   D --> V
-  V -->|n < minExamples| LOW[LOW_N]
-  V -->|CIs disjoint and abs d >= threshold| RI[REGRESSION / IMPROVEMENT]
+  V -->|"n below minExamples"| LOW[LOW_N]
+  V -->|"CIs disjoint and abs d at or above threshold"| RI[REGRESSION / IMPROVEMENT]
   V -->|otherwise| N[NOISE]
   N -->|both runs below red floor| CR[CHRONIC_RED]
   RI --> ROLL[per-model and overall roll-up]
